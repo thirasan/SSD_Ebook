@@ -9,8 +9,8 @@ public class MockupRepository implements Repository {
 
     public MockupRepository(){
         books = new Book[4];
-        Book book1 = new Book(1,20,"ahha","hhaah");
-        Book book2 = new Book(2,200,"atwo","tow");
+        Book book1 = new Book(1,20,"ahhal","hhaah");
+        Book book2 = new Book(2,200,"atweo","tow");
         Book book3 = new Book(3,2000,"eee","heeeh");
         Book book4 = new Book(4,20000,"afou","fouah");
 
