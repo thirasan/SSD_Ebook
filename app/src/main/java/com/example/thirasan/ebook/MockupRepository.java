@@ -1,29 +1,32 @@
 package com.example.thirasan.ebook;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by thirasan on 4/20/2017 AD.
  */
 
-public class MockupRepository implements Repository {
-    private Book[] books ;
+public class MockupRepository extends Repository {
+    private List<Book> books ;
 
     public MockupRepository(){
-        books = new Book[4];
-        Book book1 = new Book(1,20,"ahhal","hhaah");
-        Book book2 = new Book(2,200,"atweo","tow");
-        Book book3 = new Book(3,2000,"eee","heeeh");
-        Book book4 = new Book(4,20000,"afou","fouah");
+        books = new ArrayList<Book>();
+        Book book1 = new Book("grgrhghrghr",24,23.4,2004,"hhaah");
+        Book book2 = new Book("grgrhghrghr",23,2.4,2003,"hhnoaah yes");
+        Book book3 = new Book("grgrhghrghr",22,23000,2002,"hhaahno ");
+        Book book4 = new Book("grgrhghrghr",21,123,2001,"Stop ");
 
-        books[0] = book1;
-        books[1] = book2;
-        books[2] = book3;
-        books[3] = book4;
+        books.add(book1);
+        books.add(book2);
+        books.add(book3);
+        books.add(book4);
     }
 
-    public Book[] getAllBooks() {
+    public List<Book> getAllBooks() {
         return books;
     }
-    public Book getBook(String bookName) {
-        return books[0];
+    public List<Book> getBooks(String bookName) {
+        return books;
     }
 }
