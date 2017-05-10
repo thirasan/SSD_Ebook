@@ -9,9 +9,12 @@ import java.util.ArrayList;
 public class Cart {
     ArrayList<Book> books;
     double sumPrice;
+    ArrayList<String> cartList;
+
     public Cart() {
         books = new ArrayList<Book>();
         sumPrice = 0;
+        cartList = new ArrayList<String>();
     }
     public void addToCart(Book book) {
         books.add(book);
@@ -20,11 +23,20 @@ public class Cart {
     public ArrayList<Book> getBooks(){
         return books;
     }
+
+    public ArrayList<String> getDummyCart(){
+        return cartList;
+    }
+
     public double getSumPrice() {
         return this.sumPrice;
     }
     public void clear() {
-        this.books.clear();
         this.sumPrice = 0;
+        cartList.clear();
+        books.clear();
+    }
+    public void addDummyCart(String book){
+        cartList.add(book);
     }
 }

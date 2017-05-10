@@ -68,6 +68,14 @@ public class BookPresenter implements Observer{
         view.updateAll(books);
     }
 
+    public void setWallet(double wallet){
+        user.wallet = wallet;
+    }
+
+    public void setSumPrice(double sumPrice){
+        user.cart.sumPrice = sumPrice;
+    }
+
 
     public void addToCart(int position) {
         user.addToCart(repo.getBookById(position));

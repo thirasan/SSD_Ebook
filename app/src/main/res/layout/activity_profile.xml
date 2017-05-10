@@ -52,10 +52,17 @@
             android:text ="Collection"
             android:onClick="onCollection"></Button>
     </LinearLayout>
-
+    <Button
+        android:id="@+id/purchaseButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Purchase"
+        android:onClick="onPurchase"
+        android:visibility="invisible"/>
     <ListView
         android:id="@+id/listProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"/>
+        android:background="#ffffff" />
+
 </LinearLayout>

@@ -46,6 +46,24 @@ public class MainActivity extends AppCompatActivity implements  BookView{
 
         ArrayAdapter spinAdapter =  new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, choices);
         spin.setAdapter(spinAdapter);
+
+        createUser();
+
+    }
+    private void createUser(){
+        if(getIntent().getExtras() != null) {
+            Intent intent = getIntent();
+            int collectionSize = Integer.parseInt(intent.getStringExtra("collectionSize"));
+            double wallet = Double.parseDouble(intent.getStringExtra("wallet"));
+
+            for (int i = 0; i < collectionSize; i++) {
+                presenter.user.addCollection(intent.getStringExtra("collection" + i));
+            }
+
+            presenter.setWallet(wallet);
+        }
+
+
     }
 
     private void initViewHolders() {
@@ -87,10 +105,18 @@ public class MainActivity extends AppCompatActivity implements  BookView{
     public void onProfile(View view) {
         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
         ArrayList<Book> cartBooks = presenter.user.cart.getBooks();
-        intent.putExtra("size", cartBooks.size()+"");
-//        for (int i = 0;i<cartBooks.size();i++) {
-//            intent.putExtra("cartBook"+i,cartBooks.get(i).getTitle()+"\n"+ cartBooks.get(i).getPub_year()+ "\nPrice: " + cartBooks.get(i).getPrice() + " USD");
-//        }
+        ArrayList<String> collection = presenter.user.checkCollection();
+
+        intent.putExtra("cartSize", cartBooks.size()+"");
+        intent.putExtra("collectionSize", collection.size()+"");
+        intent.putExtra("wallet", presenter.user.wallet+"");
+        intent.putExtra("sumPrice", presenter.user.cart.getSumPrice()+"");
+        for (int i = 0;i<collection.size();i++) {
+            intent.putExtra("collection"+i,collection.get(i));
+        }
+        for (int i = 0;i<cartBooks.size();i++) {
+            intent.putExtra("cartBook"+i,cartBooks.get(i).getTitle()+"\n"+ cartBooks.get(i).getPub_year()+ "\nPrice: " + cartBooks.get(i).getPrice() + " USD");
+        }
         startActivity(intent);
         finish();
     }

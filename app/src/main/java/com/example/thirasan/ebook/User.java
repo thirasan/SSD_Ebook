@@ -9,11 +9,12 @@ import java.util.ArrayList;
 public class User {
     Cart cart;
     double wallet;
-    ArrayList<Book> collection;
+    ArrayList<String> collectionList;
+
     public User() {
         cart = new Cart();
         wallet = 0;
-        collection = new ArrayList<Book>();
+        collectionList = new ArrayList<String>();
     }
     public double refill(double amount) {
         this.wallet += amount;
@@ -23,18 +24,22 @@ public class User {
         return this.wallet;
     }
     public void addToCart(Book book) {
-        if (wallet>=cart.getSumPrice()+book.getPrice())
-            cart.addToCart(book);
+        cart.addToCart(book);
     }
     public void purchase() {
-        wallet-=cart.getSumPrice();
-        for (int i = 0;i<cart.getBooks().size();i++) {
-            collection.add(cart.getBooks().get(i));
+        if (wallet>=cart.getSumPrice()) {
+            wallet -= cart.getSumPrice();
+            for (int i = 0; i < cart.cartList.size(); i++) {
+                collectionList.add(cart.cartList.get(i));
+            }
+            cart.clear();
         }
-        cart.clear();
     }
-    public ArrayList<Book> checkCollection() {
-        return this.collection;
+    public ArrayList<String> checkCollection() {
+        return this.collectionList;
+    }
+    public void addCollection(String book){
+        collectionList.add(book);
     }
 
 }

@@ -8,5 +8,5 @@ import java.util.ArrayList;
 
 public interface ProfileView {
     void updateWallet(double amount);
-    void updateAll(ArrayList<Book> books);
+    void updateAll(ArrayList<String> books);
 }

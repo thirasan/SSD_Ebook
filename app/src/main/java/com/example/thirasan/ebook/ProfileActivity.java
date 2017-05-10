@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -21,7 +22,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView{
     ListView resultListView;
     TextView wallet;
     ProfilePresenter presenter = null;
-    String[] list;
+    Button purchaseBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +34,33 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView{
         if(presenter == null) {
             presenter = new ProfilePresenter(this);
         }
+        createUser();
+        updateWallet(presenter.getWallet());
 
+    }
+    public void createUser(){
         Intent intent = getIntent();
-        int size = Integer.parseInt(intent.getStringExtra("size"));
-        wallet.setText(size);
+        int cartSize = Integer.parseInt(intent.getStringExtra("cartSize"));
+        int collectionSize = Integer.parseInt(intent.getStringExtra("collectionSize"));
+        double wallet = Double.parseDouble(intent.getStringExtra("wallet"));
+        double sumPrice = Double.parseDouble(intent.getStringExtra("sumPrice"));
+
+        for(int i=0;i<collectionSize;i++){
+            presenter.user.addCollection(intent.getStringExtra("collection"+i));
+        }
+
+        for(int i=0;i<cartSize;i++){
+            presenter.user.cart.addDummyCart(intent.getStringExtra("cartBook"+i));
+        }
+
+        presenter.setWallet(wallet);
+        presenter.setSumPrice(sumPrice);
     }
 
     private void initViewHolders() {
         resultListView = (ListView) findViewById(R.id.listProfile);
         wallet = (TextView) findViewById(R.id.wallet);
+        purchaseBtn = (Button) findViewById(R.id.purchaseButton);
     }
     public void onRefill(View view) {
         EditText editText = (EditText)findViewById(R.id.refillText);
@@ -50,6 +69,14 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView{
     }
     public void onMain(View view) {
         Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+
+        ArrayList<String> collection = presenter.user.checkCollection();
+
+        intent.putExtra("collectionSize", collection.size()+"");
+        intent.putExtra("wallet", presenter.user.wallet+"");
+        for (int i = 0;i<collection.size();i++) {
+            intent.putExtra("collection"+i,collection.get(i));
+        }
         startActivity(intent);
         finish();
     }
@@ -60,11 +87,11 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView{
     }
 
     @Override
-    public void updateAll(ArrayList<Book> books) {
+    public void updateAll(ArrayList<String> books) {
         String[] list = new String[books.size()];
 
         for (int i = 0;i<books.size();i++) {
-            list[i] = books.get(i).getTitle()+"\n"+ books.get(i).getPub_year()+ "\nPrice: " + books.get(i).getPrice() + " USD";
+            list[i] = books.get(i);
         }
         ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         resultListView.setAdapter(adapter);
@@ -73,5 +100,16 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView{
 
     public void onCart(View view) {
         presenter.showCart();
+        purchaseBtn.setVisibility(View.VISIBLE);
+    }
+
+    public void onCollection(View view) {
+        presenter.showCollection();
+        purchaseBtn.setVisibility(View.INVISIBLE);
+    }
+
+    public void onPurchase(View view) {
+        presenter.purchase();
+        updateWallet(presenter.user.wallet);
     }
 }
