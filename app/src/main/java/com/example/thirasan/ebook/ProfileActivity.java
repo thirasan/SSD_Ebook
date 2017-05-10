@@ -32,29 +32,9 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView{
         initViewHolders();
 
         if(presenter == null) {
-            presenter = new ProfilePresenter(this);
-        }
-        createUser();
-        updateWallet(presenter.getWallet());
-
-    }
-    public void createUser(){
-        Intent intent = getIntent();
-        int cartSize = Integer.parseInt(intent.getStringExtra("cartSize"));
-        int collectionSize = Integer.parseInt(intent.getStringExtra("collectionSize"));
-        double wallet = Double.parseDouble(intent.getStringExtra("wallet"));
-        double sumPrice = Double.parseDouble(intent.getStringExtra("sumPrice"));
-
-        for(int i=0;i<collectionSize;i++){
-            presenter.user.addCollection(intent.getStringExtra("collection"+i));
+            presenter = new ProfilePresenter(this,getIntent());
         }
 
-        for(int i=0;i<cartSize;i++){
-            presenter.user.cart.addDummyCart(intent.getStringExtra("cartBook"+i));
-        }
-
-        presenter.setWallet(wallet);
-        presenter.setSumPrice(sumPrice);
     }
 
     private void initViewHolders() {
@@ -73,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView{
         ArrayList<String> collection = presenter.user.checkCollection();
 
         intent.putExtra("collectionSize", collection.size()+"");
-        intent.putExtra("wallet", presenter.user.wallet+"");
+        intent.putExtra("wallet", presenter.getWallet()+"");
         for (int i = 0;i<collection.size();i++) {
             intent.putExtra("collection"+i,collection.get(i));
         }
@@ -110,6 +90,5 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView{
 
     public void onPurchase(View view) {
         presenter.purchase();
-        updateWallet(presenter.user.wallet);
     }
 }
