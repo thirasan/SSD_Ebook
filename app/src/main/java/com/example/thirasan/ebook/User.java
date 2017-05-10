@@ -16,13 +16,13 @@ public class User {
         wallet = 0;
         collectionList = new ArrayList<String>();
     }
-    public double refill(double amount) {
+    public void refill(double amount) {
         this.wallet += amount;
-        return this.wallet;
     }
     public double checkWallet() {
         return this.wallet;
     }
+
     public void addToCart(Book book) {
         cart.addToCart(book);
     }
